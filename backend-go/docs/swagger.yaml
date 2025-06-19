@@ -1,0 +1,221 @@
+basePath: /api
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API for managing products on blockchain with QR code support
+  termsOfService: http://swagger.io/terms/
+  title: Product Trace API
+  version: "1.0"
+paths:
+  /product/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve product details and status history from the blockchain
+        and MongoDB
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              manufacturer:
+                type: string
+              name:
+                type: string
+              productId:
+                type: integer
+              qrCodeUrl:
+                type: string
+              statuses:
+                type: array
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Get product details by ID
+      tags:
+      - Products
+  /product/{id}/status:
+    post:
+      consumes:
+      - application/json
+      description: Updates the status and details of a product on the blockchain using
+        the provided product ID.
+      parameters:
+      - description: Product ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status data
+        in: body
+        name: status
+        required: true
+        schema:
+          properties:
+            details:
+              type: string
+            status:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status updated successfully
+          schema:
+            properties:
+              message:
+                type: string
+            type: object
+        "400":
+          description: Invalid product ID or missing required fields
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Failed to update status on blockchain
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Update product status
+      tags:
+      - Products
+  /product/add:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a product with name, manufacturer, initial status, details,
+        and image to the blockchain and store QR code in MongoDB
+      parameters:
+      - description: Product Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Manufacturer
+        in: formData
+        name: manufacturer
+        required: true
+        type: string
+      - description: Initial Status
+        in: formData
+        name: initialStatus
+        required: true
+        type: string
+      - description: Initial Details
+        in: formData
+        name: initialDetails
+        required: true
+        type: string
+      - description: Product Image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              imageUrl:
+                type: string
+              productId:
+                type: integer
+              qrCodeData:
+                type: string
+              qrCodeUrl:
+                type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Add a new agricultural product to the blockchain
+      tags:
+      - Products
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all products with their latest status from the blockchain
+        and MongoDB
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              properties:
+                manufacturer:
+                  type: string
+                name:
+                  type: string
+                productId:
+                  type: integer
+                qrCodeUrl:
+                  type: string
+                statuses:
+                  type: array
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Get all products
+      tags:
+      - Products
+schemes:
+- http
+swagger: "2.0"
