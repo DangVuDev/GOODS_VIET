@@ -34,7 +34,7 @@ func main() {
 
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatal("Không thể load file .env: ", err)
+		log.Panic("Không thể load file .env: ", err)
 	}
 	// fmt.Println("INFURA_KEY:",os.Getenv("INFURA_KEY"))
 	// fmt.Println("CONTRACT_ADDRESS:",os.Getenv("CONTRACT_ADDRESS"))

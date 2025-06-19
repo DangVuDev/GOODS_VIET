@@ -31,8 +31,6 @@ func NewProductTrace() *ProductTrace {
     err := godotenv.Load()
     if err != nil {
         log.Println("Không thể tải file .env, thử kiểm tra biến môi trường hệ thống: ", err)
-    } else {
-        log.Println("File .env được tải thành công")
     }
 
     // Debug: Kiểm tra biến môi trường
@@ -44,25 +42,25 @@ func NewProductTrace() *ProductTrace {
     log.Println("PRIVATE_KEY:", len(privateKeyHex), "chars") // Không in trực tiếp private key để bảo mật
 
     if infuraKey == "" {
-        log.Fatal("INFURA_KEY không được thiết lập")
+        log.Panic("INFURA_KEY không được thiết lập")
     }
     if contractAddressHex == "" {
-        log.Fatal("CONTRACT_ADDRESS không được thiết lập")
+        log.Panic("CONTRACT_ADDRESS không được thiết lập")
     }
 
     client, err := ethclient.Dial("https://sepolia.infura.io/v3/" + infuraKey)
     if err != nil {
-        log.Fatal("Không thể kết nối tới Sepolia Testnet: ", err)
+        log.Panic("Không thể kết nối tới Sepolia Testnet: ", err)
     }
 
     contractAddress := common.HexToAddress(contractAddressHex)
     if contractAddress == (common.Address{}) {
-        log.Fatal("CONTRACT_ADDRESS không hợp lệ")
+        log.Panic("CONTRACT_ADDRESS không hợp lệ")
     }
 
     contract, err := contracts.NewContracts(contractAddress, client)
     if err != nil {
-        log.Fatal("Không thể khởi tạo contract: ", err)
+        log.Panic("Không thể khởi tạo contract: ", err)
     }
 
     return &ProductTrace{
@@ -74,7 +72,7 @@ func NewProductTrace() *ProductTrace {
 func (p *ProductTrace) AddProduct(name, manufacturer, initialStatus, initialDetails string) (int64, error) {
     privateKeyHex := os.Getenv("PRIVATE_KEY")
     if privateKeyHex == "" {
-        log.Fatal("PRIVATE_KEY không được thiết lập")
+        log.Panic("PRIVATE_KEY không được thiết lập")
     }
 
     privateKey, err := crypto.HexToECDSA(privateKeyHex)
@@ -131,7 +129,7 @@ func (p *ProductTrace) AddProduct(name, manufacturer, initialStatus, initialDeta
 func (p *ProductTrace) UpdateStatus(productID int64, status, details string) error {
     privateKeyHex := os.Getenv("PRIVATE_KEY")
     if privateKeyHex == "" {
-        log.Fatal("PRIVATE_KEY không được thiết lập")
+        log.Panic("PRIVATE_KEY không được thiết lập")
     }
 
     privateKey, err := crypto.HexToECDSA(privateKeyHex)
