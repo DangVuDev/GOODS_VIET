@@ -12,7 +12,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/joho/godotenv"
 )
 
 type ProductTrace struct {
@@ -27,11 +26,6 @@ type Status struct {
 }
 
 func NewProductTrace() *ProductTrace {
-    // Load .env file
-    err := godotenv.Load()
-    if err != nil {
-        log.Println("Không thể tải file .env, thử kiểm tra biến môi trường hệ thống: ", err)
-    }
 
     // Debug: Kiểm tra biến môi trường
     infuraKey := os.Getenv("INFURA_KEY")
