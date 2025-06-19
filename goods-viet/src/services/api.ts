@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AddProductResponse, NewProduct, Product, Status } from '../types';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://goods-viet.onrender.com/api';
 
 export const addProduct = async (product: NewProduct, image: File | null): Promise<AddProductResponse> => {
   const formData = new FormData();

@@ -92,7 +92,7 @@ func AddProduct(c *gin.Context) {
 	}
 
 	// Tạo QR code
-	qrCodeURL := "http://localhost:3000/product/" + strconv.FormatInt(productID, 10)
+	qrCodeURL := "https://goods-viet-web.onrender.com/product/" + strconv.FormatInt(productID, 10)
 	qr, err := qrcode.New(qrCodeURL, qrcode.Medium)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate QR code: " + err.Error()})
