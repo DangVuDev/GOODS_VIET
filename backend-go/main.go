@@ -21,7 +21,6 @@ import (
 	"product_trace/handlers"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -32,13 +31,6 @@ func main() {
 	wd, _ := os.Getwd()
 	log.Println("Current working directory:", wd)
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Panic("Không thể load file .env: ", err)
-	}
-	// fmt.Println("INFURA_KEY:",os.Getenv("INFURA_KEY"))
-	// fmt.Println("CONTRACT_ADDRESS:",os.Getenv("CONTRACT_ADDRESS"))
-	// fmt.Println("PRIVATE_KEY:",os.Getenv("PRIVATE_KEY"))
 
 	config.ConnectDB()
 	r := gin.Default()
